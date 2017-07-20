@@ -18,7 +18,7 @@ func parseRows(rows *sql.Rows, err error) ([]map[string]string, error) {
 	ret := []map[string]string{}
 	rowp := make([]interface{}, len(columns))
 	for rows.Next() {
-		row := make([]string, len(columns))
+		row := make([]sql.NullString, len(columns))
 		for i := range row {
 			rowp[i] = &row[i]
 		}
@@ -28,7 +28,7 @@ func parseRows(rows *sql.Rows, err error) ([]map[string]string, error) {
 		}
 		rowm := map[string]string{}
 		for i := range columns {
-			rowm[columns[i]] = row[i]
+			rowm[columns[i]] = row[i].String
 		}
 		ret = append(ret, rowm)
 	}
