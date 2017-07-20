@@ -28,6 +28,7 @@ type Queryer interface {
 	QueryRow(query string, args ...interface{}) *sql.Row
 	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
 	Exec(query string, args ...interface{}) (sql.Result, error)
+	ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error)
 }
 
 // Closer close database
@@ -71,7 +72,11 @@ func (database *database) QueryRowContext(ctx context.Context, query string, arg
 }
 
 func (database *database) Exec(query string, args ...interface{}) (sql.Result, error) {
-	return database.db.Exec(query, args...)
+	return database.db.ExecContext(context.TODO(), query, args...)
+}
+
+func (database *database) ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+	return database.db.ExecContext(ctx, query, args...)
 }
 
 // Tx wrap all db operations into a closure

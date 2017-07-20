@@ -27,5 +27,9 @@ func (tx *transaction) QueryRowContext(ctx context.Context, query string, args .
 }
 
 func (tx *transaction) Exec(query string, args ...interface{}) (sql.Result, error) {
-	return tx.Tx.Exec(query, args...)
+	return tx.Tx.ExecContext(context.TODO(), query, args...)
+}
+
+func (tx *transaction) ExecContext(ctx context.Context, query string, args ...interface{}) (sql.Result, error) {
+	return tx.Tx.ExecContext(ctx, query, args...)
 }
