@@ -23,10 +23,10 @@ func Open(driverName string, dataSourceName string) (Database, error) {
 
 // Queryer query data from database
 type Queryer interface {
-	Query(query string, args ...interface{}) ([]map[string]interface{}, error)
-	QueryContext(ctx context.Context, query string, args ...interface{}) ([]map[string]interface{}, error)
-	QueryRow(query string, args ...interface{}) (map[string]interface{}, error)
-	QueryRowContext(ctx context.Context, query string, args ...interface{}) (map[string]interface{}, error)
+	Query(query string, args ...interface{}) ([]map[string]string, error)
+	QueryContext(ctx context.Context, query string, args ...interface{}) ([]map[string]string, error)
+	QueryRow(query string, args ...interface{}) *sql.Row
+	QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row
 	Exec(query string, args ...interface{}) (sql.Result, error)
 }
 
@@ -54,20 +54,20 @@ func (database *database) begin() (*transaction, error) {
 	}, nil
 }
 
-func (database *database) Query(query string, args ...interface{}) ([]map[string]interface{}, error) {
+func (database *database) Query(query string, args ...interface{}) ([]map[string]string, error) {
 	return database.QueryContext(context.TODO(), query, args...)
 }
 
-func (database *database) QueryContext(ctx context.Context, query string, args ...interface{}) ([]map[string]interface{}, error) {
+func (database *database) QueryContext(ctx context.Context, query string, args ...interface{}) ([]map[string]string, error) {
 	return parseRows(database.db.QueryContext(context.TODO(), query, args...))
 }
 
-func (database *database) QueryRow(query string, args ...interface{}) (map[string]interface{}, error) {
+func (database *database) QueryRow(query string, args ...interface{}) *sql.Row {
 	return database.QueryRowContext(context.TODO(), query, args...)
 }
 
-func (database *database) QueryRowContext(ctx context.Context, query string, args ...interface{}) (map[string]interface{}, error) {
-	return parseRow(database.db.QueryRowContext(ctx, query, args...))
+func (database *database) QueryRowContext(ctx context.Context, query string, args ...interface{}) *sql.Row {
+	return database.db.QueryRowContext(ctx, query, args...)
 }
 
 func (database *database) Exec(query string, args ...interface{}) (sql.Result, error) {
