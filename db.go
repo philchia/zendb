@@ -71,7 +71,7 @@ func (database *database) QueryRowContext(ctx context.Context, query string, arg
 }
 
 func (database *database) Exec(query string, args ...interface{}) (sql.Result, error) {
-	return database.db.Exec(query, args)
+	return database.db.Exec(query, args...)
 }
 
 // Tx wrap all db operations into a closure
