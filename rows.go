@@ -33,6 +33,7 @@ func parseRows(rows *sql.Rows, err error) ([]map[string]string, error) {
 	}
 
 	if err := rows.Err(); err != nil {
+		ret = ret[:0]
 		return nil, err
 	}
 	return ret, nil
