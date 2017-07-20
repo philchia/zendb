@@ -25,7 +25,7 @@ func parseRows(rows *sql.Rows, err error) ([]map[string]string, error) {
 		if err := rows.Scan(rowp...); err != nil {
 			return nil, err
 		}
-		rowm := map[string]string{}
+		rowm := make(map[string]string, len(columns))
 		for i := range columns {
 			rowm[columns[i]] = row[i].String
 		}
