@@ -5,6 +5,9 @@ import (
 	"database/sql"
 )
 
+// compiler checker
+var _ Database = (*database)(nil)
+
 // Database ...
 type Database interface {
 	Queryer
