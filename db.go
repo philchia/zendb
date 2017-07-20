@@ -24,6 +24,11 @@ func Open(driverName string, dataSourceName string) (Database, error) {
 	return &database{db: db}, nil
 }
 
+// DB create a Database with a sql.DB
+func DB(db *sql.DB) Database {
+	return &database{db: db}
+}
+
 // Queryer query data from database
 type Queryer interface {
 	Query(query string, args ...interface{}) ([]map[string]string, error)
