@@ -17,12 +17,11 @@ func parseRows(rows *sql.Rows, err error) ([]map[string]string, error) {
 
 	ret := []map[string]string{}
 	rowp := make([]interface{}, len(columns))
+	row := make([]sql.NullString, len(columns))
+	for i := range row {
+		rowp[i] = &row[i]
+	}
 	for rows.Next() {
-		row := make([]sql.NullString, len(columns))
-		for i := range row {
-			rowp[i] = &row[i]
-		}
-
 		if err := rows.Scan(rowp...); err != nil {
 			return nil, err
 		}
